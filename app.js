@@ -92,13 +92,19 @@ $(document).ready(function () {
 	// Next button Function
 	$("#next").on("click", function() {
 		if(progress == '0' && $('[name=fullname]').val() && $('[name=email]').val() && $('[name=gender]').val() && $('[name=birthdate]').val() && $('[name=password]').val() && $('[name=repassword]').val()){
-			$('#part-1').addClass('fadeOutLeft');
-			$('#part-1').delay(500).addClass('d-none');
-			$('#part-1').delay(500).removeClass('fadeOutLeft');
-			$('#part-2').delay(500).removeClass('d-none');
-			$('#part-2').addClass('fadeInRight');
-			progress = '1';
-			$('#back').removeAttr('disabled');
+			if(!isEmail($('[name=email]').val())){ 
+				alert('Make sure your email address are typed correctly!');
+			} else if ($('[name=password]').val() !=  $('[name=repassword]').val()) {
+				alert('Make sure both of your password are typed correctly!');
+			} else {
+				$('#part-1').addClass('fadeOutLeft');
+				$('#part-1').delay(500).addClass('d-none');
+				$('#part-1').delay(500).removeClass('fadeOutLeft');
+				$('#part-2').delay(500).removeClass('d-none');
+				$('#part-2').addClass('fadeInRight');
+				progress = '1';
+				$('#back').removeAttr('disabled');
+			}
 		} else if (progress == '1' && $('[name=province]').is(":checked")) {
 			$('#part-2').addClass('fadeOutLeft');
 			$('#part-2').delay(500).addClass('d-none');
@@ -121,6 +127,8 @@ $(document).ready(function () {
 			$('#part-5').addClass('fadeInRight');
 			progress = '4';
 			$('#next').attr('type', 'submit').html('FINISH <i class="fas fa-chevron-right ml-2"></i>');
+		} else {
+			alert('Make sure you fill the form properly!');
 		}
 	});
 
@@ -158,4 +166,10 @@ $(document).ready(function () {
 			$('#next').attr('type', 'button').html('NEXT <i class="fas fa-chevron-right ml-2"></i>');
 		}
 	});
+
+	// Email Validator
+	function isEmail(email) {
+		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		return regex.test(email);
+	}
 });
